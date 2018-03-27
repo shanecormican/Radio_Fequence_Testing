@@ -19,12 +19,17 @@ void setup() {
 
 void loop() {
   readGPS();
+  derectionGPS();
+}
+
+void derectionGPS() {
+  
 }
 
 void readGPS() {
   clearGPS();
-  PrintTime();
-  PrintLocation();
+  printTime();
+  printLocation();
   delay(750);
 }
 
@@ -33,7 +38,7 @@ void clearGPS() {
   searchNMEA();
   searchNMEA();
 }
-void PrintTime() {
+void printTime() {
   Serial.print("\nTime: ");
   Serial.print(GPS.hour + 1);
   Serial.print(':');
@@ -41,7 +46,7 @@ void PrintTime() {
   Serial.print(':');
   Serial.println(GPS.seconds);
 }
-void PrintLocation() {
+void printLocation() {
   Serial.print("Latitude: ");
   Serial.println(GPS.latitudeDegrees, 4);
   Serial.print("Longitude: ");
