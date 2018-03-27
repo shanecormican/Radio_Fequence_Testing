@@ -9,7 +9,6 @@ uint8_t c;
 
 
 void setup() {
-
   Serial.begin(115200);
   GPS.begin(9600);
   GPS.sendCommand("$PGCMD,33,0*6D");
@@ -17,17 +16,16 @@ void setup() {
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   delay(1000);
 }
+
 void loop() {
-
   readGPS();
-  delay(750);
-
 }
 
 void readGPS() {
   clearGPS();
   PrintTime();
   PrintLocation();
+  delay(750);
 }
 
 void clearGPS() {
