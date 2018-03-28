@@ -3,10 +3,7 @@
 SoftwareSerial MySerial(3, 2);
 Adafruit_GPS GPS(&MySerial);
 
-String NMEA1;
-String NMEA2;
 uint8_t c;
-
 
 void setup() {
   Serial.begin(115200);
@@ -30,7 +27,7 @@ void readGPS() {
   clearGPS();
   printTime();
   printLocation();
-  delay(750);
+  delay(4000);
 }
 
 void clearGPS() {
