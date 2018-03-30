@@ -15,12 +15,28 @@ void setup() {
 }
 
 void loop() {
-  readGPS();
+ // readGPS();
   derectionGPS();
 }
 
 void derectionGPS() {
-  
+  clearGPS();
+   printLocation();
+  int oldLat = 53.2411;
+  int oldLong = -8.8621;
+  delay(5000);
+  if(GPS.latitudeDegrees < oldLat){
+    Serial.println("test ");
+  }
+  else{
+    Serial.println("nothing ");
+  }
+ if(GPS.longitudeDegrees< oldLong){
+    Serial.println("test1 ");
+  }
+  else{
+    Serial.println("nothing1 ");
+  }
 }
 
 void readGPS() {
@@ -45,9 +61,9 @@ void printTime() {
 }
 void printLocation() {
   Serial.print("Latitude: ");
-  Serial.println(GPS.latitudeDegrees, 4);
+  Serial.println(GPS.latitudeDegrees, 4); Serial.println(GPS.lat);
   Serial.print("Longitude: ");
-  Serial.println(GPS.longitudeDegrees, 4);
+  Serial.println(GPS.longitudeDegrees, 4);Serial.println(GPS.lon);
   Serial.println("");
 }
 void searchNMEA() {
