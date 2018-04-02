@@ -15,27 +15,69 @@ void setup() {
 }
 
 void loop() {
- // readGPS();
+  // readGPS();
   derectionGPS();
 }
 
 void derectionGPS() {
   clearGPS();
-   printLocation();
-  int oldLat = 53.2411;
-  int oldLong = -8.8621;
+  printLocation();
+  float oldLat = GPS.latitudeDegrees;
+  float oldLong = GPS.longitudeDegrees;
   delay(5000);
-  if(GPS.latitudeDegrees < oldLat){
-    Serial.println("test ");
+  if (GPS.latitudeDegrees == oldLat && GPS.longitudeDegrees == oldLong) {
+    Serial.println("tes1 ");
   }
-  else{
+  else {
     Serial.println("nothing ");
   }
- if(GPS.longitudeDegrees< oldLong){
+  if (GPS.latitudeDegrees < oldLat && GPS.latitudeDegrees == oldLat) {
     Serial.println("test1 ");
   }
-  else{
+  else {
     Serial.println("nothing1 ");
+  }
+  if (GPS.longitudeDegrees < oldLong && GPS.latitudeDegrees == oldLat) {
+    Serial.println("test2 ");
+  }
+  else {
+    Serial.println("nothing2 ");
+  }
+  if (GPS.latitudeDegrees > oldLat && GPS.latitudeDegrees == oldLat) {
+    Serial.println("test3 ");
+  }
+  else {
+    Serial.println("nothing3 ");
+  }
+  if (GPS.longitudeDegrees > oldLong && GPS.latitudeDegrees == oldLat) {
+    Serial.println("test4 ");
+  }
+  else {
+    Serial.println("nothing4 ");
+  }
+  if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees == oldLong) {
+    Serial.println("test5 ");
+  }
+  else {
+    Serial.println("nothing5 ");
+  }
+  if (GPS.longitudeDegrees < oldLong && GPS.longitudeDegrees == oldLong) {
+    Serial.println("test6 ");
+  }
+  else {
+    Serial.println("nothing6 ");
+  }
+  if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees == oldLong) {
+    Serial.println("test7 ");
+  }
+  else {
+    Serial.println("nothing7 ");
+  }
+  if (GPS.longitudeDegrees > oldLong && GPS.longitudeDegrees == oldLong) {
+    Serial.println("test8 ");
+  }
+  else {
+    Serial.println("nothing8 ");
   }
 }
 
@@ -55,7 +97,7 @@ void printTime() {
   Serial.print("\nTime: ");
   Serial.print(GPS.hour + 1);
   Serial.print(':');
-  Serial.print(GPS.minute); 
+  Serial.print(GPS.minute);
   Serial.print(':');
   Serial.println(GPS.seconds);
 }
@@ -63,7 +105,7 @@ void printLocation() {
   Serial.print("Latitude: ");
   Serial.println(GPS.latitudeDegrees, 4); Serial.println(GPS.lat);
   Serial.print("Longitude: ");
-  Serial.println(GPS.longitudeDegrees, 4);Serial.println(GPS.lon);
+  Serial.println(GPS.longitudeDegrees, 4); Serial.println(GPS.lon);
   Serial.println("");
 }
 void searchNMEA() {
