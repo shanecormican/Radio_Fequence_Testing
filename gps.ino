@@ -21,12 +21,15 @@ void loop() {
 
 void derectionGPS() {
   clearGPS();
-  printLocation();
   float oldLat = GPS.latitudeDegrees;
   float oldLong = GPS.longitudeDegrees;
-  delay(5000);
+  Serial.print("Latitude: ");
+  Serial.println(oldLat, 8);
+  Serial.print("Longitude: ");
+  Serial.println(oldLong, 8);
+  delay(10000);
   if (GPS.latitudeDegrees == oldLat && GPS.longitudeDegrees == oldLong) {
-    Serial.println("tes1 ");
+    Serial.println("test ");
   }
   else {
     Serial.println("nothing ");
@@ -78,6 +81,30 @@ void derectionGPS() {
   }
   else {
     Serial.println("nothing8 ");
+  }
+  if (GPS.latitudeDegrees < oldLat ) {
+    Serial.println("test9 ");
+  }
+  else {
+    Serial.println("nothing9 ");
+  }
+  if (GPS.longitudeDegrees < oldLong ) {
+    Serial.println("test10 ");
+  }
+  else {
+    Serial.println("nothing10 ");
+  }
+  if (GPS.latitudeDegrees > oldLat ) {
+    Serial.println("test11 ");
+  }
+  else {
+    Serial.println("nothing11 ");
+  }
+  if (GPS.longitudeDegrees > oldLong ) {
+    Serial.println("test12 ");
+  }
+  else {
+    Serial.println("nothing12 ");
   }
 }
 
