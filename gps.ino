@@ -7,6 +7,7 @@ uint8_t c;
 String derection;
 float oldLat = 0;
 float oldLong = 0;
+
 void setup() {
   Serial.begin(115200);
   GPS.begin(9600);
@@ -20,13 +21,12 @@ void setup() {
 }
 
 void loop() {
-  // readGPS();
   derectionGPS();
 }
 
 void derectionGPS() {
   clearGPS();
-  printTestCode();
+ // printTestCode();
   delay(10000);
 
   if (GPS.longitudeDegrees < oldLong && GPS.latitudeDegrees == oldLat) {
@@ -60,33 +60,12 @@ void derectionGPS() {
   Serial.println(derection);
 }
 
-void readGPS() {
-  clearGPS();
-  printTime();
-  printLocation();
-  delay(4000);
-}
-
 void clearGPS() {
   searchNMEA();
   searchNMEA();
   searchNMEA();
 }
-void printTime() {
-  Serial.print("\nTime: ");
-  Serial.print(GPS.hour + 1);
-  Serial.print(':');
-  Serial.print(GPS.minute);
-  Serial.print(':');
-  Serial.println(GPS.seconds);
-}
-void printLocation() {
-  Serial.print("Latitude: ");
-  Serial.println(GPS.latitudeDegrees, 4); Serial.println(GPS.lat);
-  Serial.print("Longitude: ");
-  Serial.println(GPS.longitudeDegrees, 4); Serial.println(GPS.lon);
-  Serial.println("");
-}
+
 void searchNMEA() {
   while (!GPS.newNMEAreceived()) {
     c = GPS.read();
