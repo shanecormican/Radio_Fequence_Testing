@@ -34,35 +34,34 @@ void derectionGPS() {
   Serial.print("Longitude: ");
   Serial.println(GPS.longitudeDegrees, 8);
   delay(10000);
-  if (GPS.latitudeDegrees == oldLat && GPS.longitudeDegrees == oldLong) {
-    Serial.println("still ");
-  }
-  else {
-    Serial.println("not still ");
-  }
+
   if (GPS.longitudeDegrees < oldLong && GPS.latitudeDegrees == oldLat) {
-     Serial.println("West ");
-  }
-  else {
-    Serial.println("not West ");
-  }
-  if (GPS.longitudeDegrees > oldLong && GPS.latitudeDegrees == oldLat) {
     Serial.println("East ");
   }
-  else {
-    Serial.println("not East ");
+  else if (GPS.longitudeDegrees > oldLong && GPS.latitudeDegrees == oldLat) {
+    Serial.println("West ");
   }
-  if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees == oldLong) {
+  else  if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees == oldLong) {
     Serial.println("South ");
   }
-  else {
-    Serial.println("not South ");
-  }
-  if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees == oldLong) {
+  else if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees == oldLong) {
     Serial.println("North ");
   }
-  else {
-    Serial.println("not North ");
+  else if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees > oldLong) {
+    Serial.println("NorthWest ");
+  }
+  else if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees < oldLong) {
+    Serial.println("NorthEast ");
+  }
+  else if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees < oldLong) {
+    Serial.println("SouthEast ");
+  }
+  else if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees > oldLong) {
+    Serial.println("SouthWest ");
+  }
+  else
+  {
+    Serial.println("still ");
   }
 }
 
