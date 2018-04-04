@@ -4,6 +4,7 @@ SoftwareSerial MySerial(3, 2);
 Adafruit_GPS GPS(&MySerial);
 
 uint8_t c;
+String derection;
 float oldLat = 0;
 float oldLong = 0;
 void setup() {
@@ -25,44 +26,38 @@ void loop() {
 
 void derectionGPS() {
   clearGPS();
-  Serial.print("oldLat: ");
-  Serial.println(oldLat, 8);
-  Serial.print("Latitude: ");
-  Serial.println(GPS.latitudeDegrees, 8);
-  Serial.print("oldLong: ");
-  Serial.println(oldLong, 8);
-  Serial.print("Longitude: ");
-  Serial.println(GPS.longitudeDegrees, 8);
+  printTestCode();
   delay(10000);
 
   if (GPS.longitudeDegrees < oldLong && GPS.latitudeDegrees == oldLat) {
-    Serial.println("East ");
+    derection = "East";
   }
   else if (GPS.longitudeDegrees > oldLong && GPS.latitudeDegrees == oldLat) {
-    Serial.println("West ");
+    derection = "West";
   }
   else  if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees == oldLong) {
-    Serial.println("South ");
+    derection = "South";
   }
   else if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees == oldLong) {
-    Serial.println("North ");
+    derection = "North";
   }
   else if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees > oldLong) {
-    Serial.println("NorthWest ");
+    derection = "NorthWest";
   }
   else if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees < oldLong) {
-    Serial.println("NorthEast ");
+    derection = "NorthEast";
   }
   else if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees < oldLong) {
-    Serial.println("SouthEast ");
+    derection = "SouthEast";
   }
   else if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees > oldLong) {
-    Serial.println("SouthWest ");
+    derection = "SouthWest";
   }
   else
   {
-    Serial.println("still ");
+    derection = "still";
   }
+  Serial.println(derection);
 }
 
 void readGPS() {
@@ -97,5 +92,16 @@ void searchNMEA() {
     c = GPS.read();
   }
   GPS.parse(GPS.lastNMEA());
+}
+
+void printTestCode() {
+  Serial.print("oldLat: ");
+  Serial.println(oldLat, 8);
+  Serial.print("Latitude: ");
+  Serial.println(GPS.latitudeDegrees, 8);
+  Serial.print("oldLong: ");
+  Serial.println(oldLong, 8);
+  Serial.print("Longitude: ");
+  Serial.println(GPS.longitudeDegrees, 8);
 }
 
