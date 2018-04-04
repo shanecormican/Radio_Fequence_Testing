@@ -53,40 +53,16 @@ void derectionGPS() {
     Serial.println("not East ");
   }
   if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees == oldLong) {
-    Serial.println("test4 ");
+    Serial.println("South ");
   }
   else {
-    Serial.println("nothing4 ");
+    Serial.println("not South ");
   }
   if (GPS.latitudeDegrees > oldLat && GPS.longitudeDegrees == oldLong) {
-    Serial.println("test5 ");
+    Serial.println("North ");
   }
   else {
-    Serial.println("nothing5 ");
-  }
-  if (GPS.latitudeDegrees < oldLat ) {
-    Serial.println("test6 ");
-  }
-  else {
-    Serial.println("nothing6 ");
-  }
-  if (GPS.longitudeDegrees < oldLong ) {
-    Serial.println("test7 ");
-  }
-  else {
-    Serial.println("nothing7 ");
-  }
-  if (GPS.latitudeDegrees > oldLat ) {
-    Serial.println("West ");
-  }
-  else {
-    Serial.println("not West ");
-  }
-  if (GPS.longitudeDegrees > oldLong ) {
-    Serial.println("East ");
-  }
-  else {
-    Serial.println("not East ");
+    Serial.println("not North ");
   }
 }
 
