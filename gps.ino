@@ -4,7 +4,8 @@ SoftwareSerial MySerial(3, 2);
 Adafruit_GPS GPS(&MySerial);
 
 uint8_t c;
-
+float oldLat = 0;
+float oldLong = 0;
 void setup() {
   Serial.begin(115200);
   GPS.begin(9600);
@@ -12,6 +13,13 @@ void setup() {
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   delay(1000);
+  clearGPS();
+  oldLat = GPS.latitudeDegrees;
+  oldLong = GPS.longitudeDegrees;
+  //  Serial.print("Latitude: ");
+  //  Serial.println(oldLat, 8);
+  //  Serial.print("Longitude: ");
+  //  Serial.println(oldLong, 8);
 }
 
 void loop() {
@@ -21,12 +29,16 @@ void loop() {
 
 void derectionGPS() {
   clearGPS();
-  float oldLat = GPS.latitudeDegrees;
-  float oldLong = GPS.longitudeDegrees;
-  Serial.print("Latitude: ");
+  //  float oldLat = GPS.latitudeDegrees;
+  //  float oldLong = GPS.longitudeDegrees;
+  Serial.print("oldLat: ");
   Serial.println(oldLat, 8);
-  Serial.print("Longitude: ");
+  Serial.print("Latitude: ");
+  Serial.println(GPS.latitudeDegrees, 8);
+  Serial.print("oldLong: ");
   Serial.println(oldLong, 8);
+  Serial.print("Longitude: ");
+  Serial.println(GPS.longitudeDegrees, 8);
   delay(10000);
   if (GPS.latitudeDegrees == oldLat && GPS.longitudeDegrees == oldLong) {
     Serial.println("test ");
@@ -53,10 +65,10 @@ void derectionGPS() {
     Serial.println("nothing3 ");
   }
   if (GPS.longitudeDegrees > oldLong && GPS.latitudeDegrees == oldLat) {
-    Serial.println("test4 ");
+    Serial.println("East ");
   }
   else {
-    Serial.println("nothing4 ");
+    Serial.println("not East ");
   }
   if (GPS.latitudeDegrees < oldLat && GPS.longitudeDegrees == oldLong) {
     Serial.println("test5 ");
@@ -101,10 +113,10 @@ void derectionGPS() {
     Serial.println("nothing11 ");
   }
   if (GPS.longitudeDegrees > oldLong ) {
-    Serial.println("test12 ");
+    Serial.println("East ");
   }
   else {
-    Serial.println("nothing12 ");
+    Serial.println("not East ");
   }
 }
 
