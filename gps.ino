@@ -1,6 +1,6 @@
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
-SoftwareSerial MySerial(3, 2);
+SoftwareSerial MySerial(5, 2);
 Adafruit_GPS GPS(&MySerial);
 
 uint8_t c;
@@ -26,7 +26,7 @@ void loop() {
 
 void derectionGPS() {
   clearGPS();
- // printTestCode();
+  printTestCode();
   delay(10000);
 
   if (GPS.longitudeDegrees < oldLong && GPS.latitudeDegrees == oldLat) {
