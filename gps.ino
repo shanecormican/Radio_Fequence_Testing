@@ -64,6 +64,7 @@ void clearGPS() {
   searchNMEA();
   searchNMEA();
   searchNMEA();
+  searchNMEA();
 }
 
 void searchNMEA() {
