@@ -20,8 +20,63 @@ GSM_SMS sms;
 
 char senderNumber[20] = "+353851262620"; // Array to hold the number a SMS is retreived from
 
-void setup()
-{
+void setup(){
+  setupGsm_Gps(); // setup function
+}
+
+void loop(){
+  loopFunction(); // contains all the functions
+}
+
+void loopFunction() {
+
+  while (ss.available() > 0) //while there is stuff in the buffer
+    if (GPS.encode(ss.read()) ) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
+
+
+
+  derectionloops(); // chech derection of travel
+  debugingPrint();  // debugging to print derection, latatude, longatude
+  //sendText(); // code to send the text message
+
+  delay(10000); // delay
+}
+
+void derectionloops() {
+  if (GPS.location.lng() < oldLong - error_factor && GPS.location.lat() == oldLat) {
+    derection = "East";
+  }
+  else if (GPS.location.lng() > oldLong + error_factor && GPS.location.lat() == oldLat) {
+    derection = "West";
+  }
+  else  if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() == oldLong) {
+    derection = "South";
+  }
+  else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() == oldLong) {
+    derection = "North";
+  }
+  else if (GPS.location.lat() == 0.0 && GPS.location.lng() == 0.0 ) {
+    derection = "calibrating";
+  }
+  else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() > oldLong + error_factor) {
+    derection = "NorthEast";
+  }
+  else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() < oldLong - error_factor) {
+    derection = "SouthWest";
+  }
+  else if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() < oldLong - error_factor) {
+    derection = "NorthWest";
+  }
+  else if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() > oldLong + error_factor ) {
+    derection = "SouthEast";
+  }
+  else
+  {
+    derection = "still";
+  }
+}
+
+void setupGsm_Gps() {
   ss.begin(GPSBaud); // begin the GPS serial connection
 
   Serial.begin(9600); // begin Serial communication with the computer at 9600 baud rate
@@ -42,49 +97,7 @@ void setup()
   }
 }
 
-
-void loop()
-{
-  while (ss.available() > 0) //while there is stuff in the buffer
-    if (GPS.encode(ss.read()) ) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
-
-      if (GPS.location.lng() < oldLong - error_factor && GPS.location.lat() == oldLat) {
-        derection = "East";
-      }
-      else if (GPS.location.lng() > oldLong + error_factor && GPS.location.lat() == oldLat) {
-        derection = "West";
-      }
-      else  if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() == oldLong) {
-        derection = "South";
-      }
-      else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() == oldLong) {
-        derection = "North";
-      }
-      else if (GPS.location.lat() == 0.0 && GPS.location.lng() == 0.0 ) {
-        derection = "calibrating";
-      }
-      else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() > oldLong + error_factor) {
-        derection = "NorthEast";
-      }
-      else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() < oldLong - error_factor) {
-        derection = "SouthWest";
-      }
-      else if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() < oldLong - error_factor) {
-        derection = "NorthWest";
-      }
-      else if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() > oldLong + error_factor ) {
-        derection = "SouthEast";
-      }
-      else
-      {
-        derection = "still";
-      }
-  Serial.print("direction: ");
-  Serial.println(derection);
-  Serial.print("lat: ");
-  Serial.println(GPS.location.lat(), 5);
-  Serial.print("lng: ");
-  Serial.println(GPS.location.lng(), 5);
+void sendText() {
   if ( derection != "still" || derection != "calibrating") {
     sms.beginSMS(senderNumber); // begin an sms to the sender number
     sms.print("Alert Bull Escaped!!"); // append a comma
@@ -92,9 +105,14 @@ void loop()
     sms.endSMS(); //send the sms
   }
 
+}
 
-
-
-  delay(10000); // delay
+void debugingPrint() {
+  Serial.print("direction: ");
+  Serial.println(derection);
+  Serial.print("lat: ");
+  Serial.println(GPS.location.lat(), 5);
+  Serial.print("lng: ");
+  Serial.println(GPS.location.lng(), 5);
 }
 
