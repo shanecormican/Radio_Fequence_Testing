@@ -11,10 +11,8 @@ TinyGPSPlus GPS; // The TinyGPS++ object for interfacing with the GPS
 AltSoftSerial ss; // The serial connection object to the GPS device
 
 String derection;
-//float oldLat = 53.27892;
-//float oldLong = -9.00985;
-float oldLat = 0;
-float oldLong = 0;
+float oldLat = 53.27892;
+float oldLong = -9.00985;
 float error_factor = 0.00002;
 
 const int ledPin =  12;
@@ -69,7 +67,7 @@ void loop() {
       sms.beginSMS(phoneNumber1); // begin an sms to the sender number
       sms.print("John Smith Farm Panic Button has been pressed!!! "); // append a comma
       sms.print("\nPlease check if John Smith is ok. "); // append a comma
-        sms.print("\nBE WARE OF BULL!!! "); // append a comma
+      sms.print("\nBEWARE OF BULL!!! "); // append a comma
       sms.endSMS(); //send the sms
     }
     if (buf[0] == '0') {
@@ -90,9 +88,9 @@ void loop() {
           else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() == oldLong) {
             derection = "North";
           }
-          else if (GPS.location.lat() == 0.0 && GPS.location.lng() == 0.0 ) {
-            derection = "calibrating";
-          }
+                else if (GPS.location.lat() == 0.0 && GPS.location.lng() == 0.0 ) {
+                  derection = "Calibrating";
+                }
           else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() > oldLong + error_factor) {
             derection = "NorthEast";
           }
@@ -107,7 +105,7 @@ void loop() {
           }
           else
           {
-            derection = "still";
+            derection = "Still";
           }
       Serial.print("direction: ");
       Serial.println(derection);
@@ -116,12 +114,15 @@ void loop() {
       Serial.print("lng: ");
       Serial.println(GPS.location.lng(), 5);
 
-      //      if ( derection != "still" || derection != "calibrating") {
-      //        sms.beginSMS(phoneNumber); // begin an sms to the sender number
-      //        sms.print("Alert Bull Escaped!!"); // append a comma
-      //        sms.print("Heading:" + derection); // append a comma
-      //        sms.endSMS(); //send the sms
-      //      }
+      if ( derection.equals("Still")  || derection.equals("Calibrating")  ) {
+        // do nothing
+      }
+      else {
+        sms.beginSMS(phoneNumber); // begin an sms to the sender number
+        sms.print("Alert Bull Escaped!!"); // append a comma
+        sms.print("Heading:" + derection); // append a comma
+        sms.endSMS(); //send the sms
+      }
     }
   }
   delay(1000);
