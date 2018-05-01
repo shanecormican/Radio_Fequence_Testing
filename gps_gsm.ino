@@ -11,9 +11,10 @@ TinyGPSPlus GPS; // The TinyGPS++ object for interfacing with the GPS
 AltSoftSerial ss; // The serial connection object to the GPS device
 
 String derection;
-float oldLat = 53.27870;
-float oldLong = -9.00108;
-float error_factor = 0.00004;
+float oldLat = 53.27880;
+float oldLong = -9.00100;
+float Calibrating = 0.00004;
+int count = 0;
 
 const int ledPin =  12;
 
@@ -71,72 +72,76 @@ void loop() {
       sms.endSMS(); //send the sms
     }
     if (buf[0] == '0') {
+      count++;  
       digitalWrite(ledPin, 0);
-      while (ss.available() > 0) //while there is stuff in the buffer
-        if (GPS.encode(ss.read()) ) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
+      if (count == 1000) {
+        while (ss.available() > 0) //while there is stuff in the buffer
+          if (GPS.encode(ss.read()) ) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
 
 
-          if (GPS.location.lng() < oldLong - error_factor && GPS.location.lat() == oldLat - error_factor) {
-            derection = "East";
-          }
-          else if (GPS.location.lng() > oldLong + error_factor && GPS.location.lat() == oldLat - error_factor) {
-            derection = "West";
-          }
-          else  if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() == oldLong - error_factor) {
-            derection = "South";
-          }
-          else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() == oldLong - error_factor) {
-            derection = "North";
-          }
-          else if (GPS.location.lng() < oldLong - error_factor && GPS.location.lat() == oldLat + error_factor ) {
-            derection = "East";
-          }
-          else if (GPS.location.lng() > oldLong + error_factor && GPS.location.lat() == oldLat + error_factor ) {
-            derection = "West";
-          }
-          else  if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() == oldLong + error_factor ) {
-            derection = "South";
-          }
-          else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() == oldLong + error_factor ) {
-            derection = "North";
-          }
-          else if (GPS.location.lat() == 0.0 && GPS.location.lng() == 0.0 ) {
-            derection = "Calibrating";
-          }
-          else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() > oldLong + error_factor) {
-            derection = "NorthEast";
-          }
-          else if (GPS.location.lat() > oldLat + error_factor && GPS.location.lng() < oldLong - error_factor) {
-            derection = "SouthEast";
-          }
-          else if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() < oldLong - error_factor) {
-            derection = "NorthWest";
-          }
-          else if (GPS.location.lat() < oldLat - error_factor && GPS.location.lng() > oldLong + error_factor ) {
-            derection = "SouthWest";
-          }
-          else
-          {
-            derection = "Still";
-          }
-      Serial.print("direction: ");
-      Serial.println(derection);
-      Serial.print("lat: ");
-      Serial.println(GPS.location.lat(), 5);
-      Serial.print("lng: ");
-      Serial.println(GPS.location.lng(), 5);
+            if (GPS.location.lng() < oldLong - Calibrating && GPS.location.lat() == oldLat - Calibrating) {
+              derection = "East";
+            }
+            else if (GPS.location.lng() > oldLong + Calibrating && GPS.location.lat() == oldLat - Calibrating) {
+              derection = "West";
+            }
+            else  if (GPS.location.lat() < oldLat - Calibrating && GPS.location.lng() == oldLong - Calibrating) {
+              derection = "South";
+            }
+            else if (GPS.location.lat() > oldLat + Calibrating && GPS.location.lng() == oldLong - Calibrating) {
+              derection = "North";
+            }
+            else if (GPS.location.lng() < oldLong - Calibrating && GPS.location.lat() == oldLat + Calibrating ) {
+              derection = "East";
+            }
+            else if (GPS.location.lng() > oldLong + Calibrating && GPS.location.lat() == oldLat + Calibrating ) {
+              derection = "West";
+            }
+            else  if (GPS.location.lat() < oldLat - Calibrating && GPS.location.lng() == oldLong + Calibrating ) {
+              derection = "South";
+            }
+            else if (GPS.location.lat() > oldLat + Calibrating && GPS.location.lng() == oldLong + Calibrating ) {
+              derection = "North";
+            }
+            else if (GPS.location.lat() == 0.0 && GPS.location.lng() == 0.0 ) {
+              derection = "Calibrating";
+            }
+            else if (GPS.location.lat() > oldLat + Calibrating && GPS.location.lng() > oldLong + Calibrating) {
+              derection = "NorthEast";
+            }
+            else if (GPS.location.lat() > oldLat + Calibrating && GPS.location.lng() < oldLong - Calibrating) {
+              derection = "SouthEast";
+            }
+            else if (GPS.location.lat() < oldLat - Calibrating && GPS.location.lng() < oldLong - Calibrating) {
+              derection = "NorthWest";
+            }
+            else if (GPS.location.lat() < oldLat - Calibrating && GPS.location.lng() > oldLong + Calibrating ) {
+              derection = "SouthWest";
+            }
+            else
+            {
+              derection = "Still";
+            }
+        Serial.print("direction: ");
+        Serial.println(derection);
+        Serial.print("lat: ");
+        Serial.println(GPS.location.lat(), 5);
+        Serial.print("lng: ");
+        Serial.println(GPS.location.lng(), 5);
 
-      //      if ( derection.equals("Still")  || derection.equals("Calibrating")  ) {
-      //        // do nothing
-      //      }
-      //      else {
-      //        sms.beginSMS(phoneNumber); // begin an sms to the sender number
-      //        sms.print("Alert Bull Escaped!!"); // append a comma
-      //        sms.print("Heading:" + derection); // append a comma
-      //        sms.endSMS(); //send the sms
-      //      }
+        //      if ( derection.equals("Still")  || derection.equals("Calibrating")  ) {
+        //        // do nothing
+        //      }
+        //      else {
+        //        sms.beginSMS(phoneNumber); // begin an sms to the sender number
+        //        sms.print("Alert Bull Escaped!!"); // append a comma
+        //        sms.print("Heading:" + derection); // append a comma
+        //        sms.endSMS(); //send the sms
+        //      }
+        count = 0;
+      }
     }
+
   }
-  delay(1000);
 
 }
