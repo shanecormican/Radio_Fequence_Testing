@@ -74,7 +74,7 @@ void loop() {
     if (buf[0] == '0') {
       count++;
       digitalWrite(ledPin, 0);
-      if (count == 1000) {
+      if (count == 500) {
         while (ss.available() > 0) //while there is stuff in the buffer
           if (GPS.encode(ss.read()) ) //if it can successfully decode it, do it. Else try again when more charachters are in the buffer
 
